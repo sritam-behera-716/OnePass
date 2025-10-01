@@ -5,5 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.OnePass" parent="Base.Theme.OnePass" />
+    <style name="Theme.OnePass" parent="Base.Theme.OnePass">
+        <item name="background">@color/background_color</item>
+    </style>
 </resources>

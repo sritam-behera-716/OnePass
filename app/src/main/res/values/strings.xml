@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OnePass</string>
+    <string name="logo">logo</string>
+    <string name="splash_description">The only password manager you’ll ever need.</string>
 </resources>

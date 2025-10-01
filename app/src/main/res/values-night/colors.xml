@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_color">#FFFFFF</color>
+    <color name="background_color">#545974</color>
     <color name="default_color">#FF6464</color>
-    <color name="text_color">#FFFFFF</color>
+    <color name="text_color">#545974</color>
     <color name="text_color_gray">#BABABA</color>
-    <color name="span_color">#545974</color>
+    <color name="span_color">#FFFFFF</color>
 </resources>

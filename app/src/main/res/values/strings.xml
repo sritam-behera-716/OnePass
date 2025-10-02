@@ -2,4 +2,21 @@
     <string name="app_name">OnePass</string>
     <string name="logo">logo</string>
     <string name="splash_description">The only password manager you’ll ever need.</string>
+
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
+
+    <string name="title_1">GENERATE SECURE PASSWORDS.</string>
+    <string name="description_1">Stop using unsecure passwords for your online accounts, level up with OnePass. Get the most secure and difficult-to-crack passwords.</string>
+    <string name="title_2">ALL YOUR PASSWORDS ARE HERE.</string>
+    <string name="description_2">Store and manage all of your passwords from one place. Don’t remember hundreds of passwords, just remember one.</string>
+    <string name="title_3">DON’T TYPE, AUTOFILL YOUR CREDENTIALS.</string>
+    <string name="description_3">Don’t compromise your passwords by typing them in public, let OnePass autofill those and keep your credentials secure.</string>
+    
+    <string-array name="tab_titles">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

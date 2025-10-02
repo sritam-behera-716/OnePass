@@ -1,4 +1,4 @@
-package com.securevault.onepass;
+package com.securevault.onepass.ui.splash;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,17 +14,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.securevault.onepass.R;
 import com.securevault.onepass.databinding.ActivitySplashBinding;
+import com.securevault.onepass.ui.main.MainActivity;
+import com.securevault.onepass.ui.onboarding.OnboardingActivity;
+import com.securevault.onepass.utils.PreferenceHelper;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
-    private ActivitySplashBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivitySplashBinding.inflate(getLayoutInflater());
+        ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -38,8 +41,15 @@ public class SplashActivity extends AppCompatActivity {
         spannableString.setSpan(new ForegroundColorSpan(getColor(R.color.span_color)), 3, text.length(), 0);
         binding.appName.setText(spannableString);
 
-        new Handler(Looper.getMainLooper()).postDelayed(()-> {
-            startActivity(new Intent(this, MainActivity.class));
+        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance(this);
+        boolean isIntroOpened = preferenceHelper.getIntroOpenInformation(PreferenceHelper.KEY_INTRO_OPEN);
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (isIntroOpened) {
+                startActivity(new Intent(this, MainActivity.class));
+            } else {
+                startActivity(new Intent(this, OnboardingActivity.class));
+            }
             finish();
         }, 3000);
     }

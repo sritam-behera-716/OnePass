@@ -13,10 +13,24 @@
     <string name="description_2">Store and manage all of your passwords from one place. Don’t remember hundreds of passwords, just remember one.</string>
     <string name="title_3">DON’T TYPE, AUTOFILL YOUR CREDENTIALS.</string>
     <string name="description_3">Don’t compromise your passwords by typing them in public, let OnePass autofill those and keep your credentials secure.</string>
-    
+
     <string-array name="tab_titles">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string name="home">Home</string>
+    <string name="fab">Fab</string>
+    <string name="profile">Profile</string>
+
+    <string name="passwords_stored">Passwords Stored</string>
+    <string name="passwords_stored_number">5</string>
+
+    <string name="search_websites_or_apps">Search Websites/Apps…</string>
+
+    <string name="f">F</string>
+    <string name="facebook">Facebook</string>
+    <string name="copy">copy</string>
+    <string name="copied">Copied!</string>
 </resources>

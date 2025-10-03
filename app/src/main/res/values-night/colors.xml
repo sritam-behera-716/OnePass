@@ -5,4 +5,5 @@
     <color name="text_color">#545974</color>
     <color name="text_color_gray">#BABABA</color>
     <color name="span_color">#FFFFFF</color>
+    <color name="bottom_navigation_color">#14FFFFFF</color>
 </resources>

@@ -1,22 +1,19 @@
 package com.securevault.onepass.ui.main.home;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.securevault.onepass.data.PasswordItem;
+import com.securevault.onepass.R;
 import com.securevault.onepass.databinding.FragmentHomeBinding;
-
-import java.util.ArrayList;
+import com.securevault.onepass.utils.SearchViewHelper;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -31,39 +28,44 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int searchViewEditId = binding.searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        EditText searchViewEditText = binding.searchView.findViewById(searchViewEditId);
-//        searchViewEditText.setBackground(null);
-//        searchViewEditText.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        searchViewEditText.getBackground().clearColorFilter();
-//        searchViewEditText.setPadding(0, 0, 0, 0);
-
-        if (searchViewEditText != null) {
-            searchViewEditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        binding.searchView.clearFocus();
+        SearchViewHelper.setStrokeColorByTextListener(binding.searchView);
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Fragment fragment = getChildFragmentManager().findFragmentById(R.id.frameLayout);
+                if (fragment instanceof PasswordListFragment) {
+                    ((PasswordListFragment) fragment).filterList(newText.trim());
+                } else if (fragment instanceof NoPasswordFoundFragment && newText.trim().isEmpty()) {
+                    loadFragment(new PasswordListFragment());
                 }
+                return true;
+            }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    binding.searchView.setActivated(s.length() > 0);
-                }
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+        });
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
+        showPasswordList();
+    }
+
+    public void showPasswordList() {
+        loadFragment(new PasswordListFragment());
+    }
+
+    public void showNoPasswordFound(boolean flag) {
+        if (flag) {
+            loadFragment(NoPasswordFoundFragment.getInstance(requireContext()));
+        } else {
+            loadFragment(new NoPasswordFoundFragment());
         }
+    }
 
-        ArrayList<PasswordItem> passwordItemList = new ArrayList<>();
-        passwordItemList.add(new PasswordItem("Facebook"));
-        passwordItemList.add(new PasswordItem("Microsoft"));
-        passwordItemList.add(new PasswordItem("Google"));
-        passwordItemList.add(new PasswordItem("Instagram"));
-        passwordItemList.add(new PasswordItem("GitHub"));
-
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(requireContext(), passwordItemList);
-        binding.recyclerView.setAdapter(adapter);
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commitNow();
     }
 }

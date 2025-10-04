@@ -7,10 +7,10 @@
         android:title="@string/home" />
     <item
         android:id="@+id/addPasswordFragment"
-        android:icon="@drawable/ic_add"
-        android:title="@string/fab" />
+        android:icon="@drawable/ic_lock"
+        android:title="@string/password" />
     <item
         android:id="@+id/userFragment"
-        android:icon="@drawable/ic_user"
-        android:title="@string/profile" />
+        android:icon="@drawable/ic_setting"
+        android:title="@string/setting" />
 </menu>

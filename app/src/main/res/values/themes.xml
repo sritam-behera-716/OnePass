@@ -10,7 +10,4 @@
         <item name="colorControlActivated">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="background">@color/background_color</item>
-    </style>
 </resources>

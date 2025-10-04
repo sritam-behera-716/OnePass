@@ -1,9 +1,12 @@
 package com.securevault.onepass.ui.main.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +23,18 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<PasswordItem> passwordItemList;
+    private int lastPosition = -1;
 
     public RecyclerViewAdapter(Context context, ArrayList<PasswordItem> passwordItemList) {
         this.context = context;
         this.passwordItemList = passwordItemList;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setFilteredList(ArrayList<PasswordItem> filteredPasswordItemList) {
+        this.passwordItemList.clear();
+        this.passwordItemList.addAll(filteredPasswordItemList);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -47,11 +58,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.passwordName.setTextColor(context.getColor(R.color.white));
             Toast.makeText(context, "Copied!", Toast.LENGTH_SHORT).show();
         });
+
+        showAnimation(holder.itemView, position);
     }
 
     @Override
     public int getItemCount() {
         return passwordItemList.size();
+    }
+
+    private void showAnimation(View itemView, int position) {
+        if (position > lastPosition) {
+            Animation slideInLeft = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            itemView.setAnimation(slideInLeft);
+            lastPosition = position;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

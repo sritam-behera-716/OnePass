@@ -21,8 +21,8 @@
     </string-array>
 
     <string name="home">Home</string>
-    <string name="fab">Fab</string>
-    <string name="profile">Profile</string>
+    <string name="password">Password</string>
+    <string name="setting">Setting</string>
 
     <string name="passwords_stored">Passwords Stored</string>
     <string name="passwords_stored_number">5</string>
@@ -33,4 +33,10 @@
     <string name="facebook">Facebook</string>
     <string name="copy">copy</string>
     <string name="copied">Copied!</string>
+
+    <string name="searchIllustration">Search illustration</string>
+    <string name="no_results">No results</string>
+    <string name="no_found">We couldn\'t find anything. Try searching for something else.</string>
+    <string name="no_passwords">No passwords</string>
+    <string name="no_passwords_stored">No passwords stored yet. Add your first password to get started!</string>
 </resources>

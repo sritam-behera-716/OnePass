@@ -39,4 +39,13 @@
     <string name="no_found">We couldn\'t find anything. Try searching for something else.</string>
     <string name="no_passwords">No passwords</string>
     <string name="no_passwords_stored">No passwords stored yet. Add your first password to get started!</string>
+
+    <string name="add_new">Add new</string>
+    <string name="name">name</string>
+    <string name="website_app_name">Website/App Name</string>
+    <string name="url">url</string>
+    <string name="website_app_link">Website/App Link</string>
+    <string name="username">Email / Username</string>
+    <string name="generate_new">Generate new</string>
+    <string name="add_password">Add password</string>
 </resources>

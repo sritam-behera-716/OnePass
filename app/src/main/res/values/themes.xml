@@ -10,4 +10,11 @@
         <item name="colorControlActivated">@android:color/transparent</item>
     </style>
 
+    <style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardBackgroundColor">#3E3E3E</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
 </resources>

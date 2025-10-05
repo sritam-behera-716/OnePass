@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00C853"
-    tools:context=".ui.main.SettingFragment">
+    tools:context=".ui.main.setting.SettingFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Setting Fragment"
-        android:textColor="@color/white"
+        android:textColor="@color/default_color"
         android:textSize="24sp" />
 
 </FrameLayout>

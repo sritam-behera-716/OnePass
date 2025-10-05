@@ -12,12 +12,12 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.securevault.onepass.ui.main.SettingFragment"
+        android:name="com.securevault.onepass.ui.main.setting.SettingFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/addPasswordFragment"
-        android:name="com.securevault.onepass.ui.main.PasswordFragment"
+        android:name="com.securevault.onepass.ui.main.password.PasswordFragment"
         android:label="fragment_add_password"
         tools:layout="@layout/fragment_password" />
 </navigation>

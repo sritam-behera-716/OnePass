@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.securevault.onepass.data.DatabaseHelper;
 import com.securevault.onepass.data.PasswordItem;
 import com.securevault.onepass.databinding.FragmentPasswordListBinding;
 
@@ -31,28 +32,8 @@ public class PasswordListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        allPasswordItems = new ArrayList<>();
-        allPasswordItems.add(new PasswordItem(1, "Facebook"));
-        allPasswordItems.add(new PasswordItem(2, "Microsoft"));
-        allPasswordItems.add(new PasswordItem(3, "Google"));
-        allPasswordItems.add(new PasswordItem(4, "Instagram"));
-        allPasswordItems.add(new PasswordItem(5, "GitHub"));
-        allPasswordItems.add(new PasswordItem(6, "Facebook"));
-        allPasswordItems.add(new PasswordItem(7, "Microsoft"));
-        allPasswordItems.add(new PasswordItem(8, "Google"));
-        allPasswordItems.add(new PasswordItem(9, "Instagram"));
-        allPasswordItems.add(new PasswordItem(10, "GitHub"));
-        allPasswordItems.add(new PasswordItem(11, "Facebook"));
-        allPasswordItems.add(new PasswordItem(12, "Microsoft"));
-        allPasswordItems.add(new PasswordItem(13, "Google"));
-        allPasswordItems.add(new PasswordItem(14, "Instagram"));
-        allPasswordItems.add(new PasswordItem(15, "GitHub"));
-        allPasswordItems.add(new PasswordItem(16, "Facebook"));
-        allPasswordItems.add(new PasswordItem(17, "Microsoft"));
-        allPasswordItems.add(new PasswordItem(18, "Google"));
-        allPasswordItems.add(new PasswordItem(19, "Instagram"));
-        allPasswordItems.add(new PasswordItem(20, "GitHub"));
-
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
+        allPasswordItems = (ArrayList<PasswordItem>) databaseHelper.passwordDao().retrieveRecord();
         resetDataSet();
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));

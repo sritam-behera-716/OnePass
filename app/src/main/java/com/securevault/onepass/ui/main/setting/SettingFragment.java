@@ -1,4 +1,4 @@
-package com.securevault.onepass.ui.main;
+package com.securevault.onepass.ui.main.setting;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

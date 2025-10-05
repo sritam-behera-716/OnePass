@@ -52,6 +52,22 @@ public class PasswordFragment extends Fragment {
 
             DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
             databaseHelper.passwordDao().insertRecord(new PasswordItem(name, url, username, password, date));
+            Toast.makeText(requireContext(), "Password added successfully!", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        binding.nameEditText.setText(null);
+        binding.urlEditText.setText(null);
+        binding.usernameEditText.setText(null);
+        binding.passwordEditText.setText(null);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

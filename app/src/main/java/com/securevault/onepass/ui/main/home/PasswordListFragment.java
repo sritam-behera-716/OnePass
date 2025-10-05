@@ -36,6 +36,10 @@ public class PasswordListFragment extends Fragment {
         allPasswordItems = (ArrayList<PasswordItem>) databaseHelper.passwordDao().retrieveRecord();
         resetDataSet();
 
+        if (getParentFragment() != null) {
+            ((HomeFragment) getParentFragment()).changePasswordStoredNumber(allPasswordItems.size());
+        }
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new RecyclerViewAdapter(requireContext(), passwordItemList);
         binding.recyclerView.setAdapter(adapter);
@@ -65,5 +69,11 @@ public class PasswordListFragment extends Fragment {
 
     private void resetDataSet() {
         passwordItemList = new ArrayList<>(allPasswordItems);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

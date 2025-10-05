@@ -44,4 +44,10 @@ public class NoPasswordFoundFragment extends Fragment {
             binding.description.setText(description);
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

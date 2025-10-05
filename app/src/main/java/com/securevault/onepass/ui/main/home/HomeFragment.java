@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.searchView.clearFocus();
-        SearchViewHelper.setStrokeColorByTextListener(binding.searchView);
+        SearchViewHelper.setStrokeColorByTextListener(requireContext(), binding.searchView);
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -67,5 +67,15 @@ public class HomeFragment extends Fragment {
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commitNow();
+    }
+
+    public void changePasswordStoredNumber(int size) {
+        binding.passwordStoreNumber.setText(String.valueOf(size));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

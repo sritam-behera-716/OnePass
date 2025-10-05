@@ -179,4 +179,10 @@ public class OnboardingActivity extends AppCompatActivity {
         }
         return spannableString;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }

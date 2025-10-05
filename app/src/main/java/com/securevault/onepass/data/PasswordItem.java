@@ -40,12 +40,6 @@ public class PasswordItem {
         this.createdDate = createdDate;
     }
 
-    @Ignore
-    public PasswordItem(int id, String passwordName) {
-        this.id = id;
-        this.passwordName = passwordName;
-    }
-
     public int getId() {
         return id;
     }

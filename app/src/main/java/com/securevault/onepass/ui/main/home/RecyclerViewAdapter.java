@@ -2,6 +2,7 @@ package com.securevault.onepass.ui.main.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,13 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<PasswordItem> passwordItemList;
+    private final RecyclerViewAdapter.OnItemClickListener listener;
     private int lastPosition = -1;
 
-    public RecyclerViewAdapter(Context context, ArrayList<PasswordItem> passwordItemList) {
+    public RecyclerViewAdapter(Context context, ArrayList<PasswordItem> passwordItemList, RecyclerViewAdapter.OnItemClickListener listener) {
         this.context = context;
         this.passwordItemList = passwordItemList;
+        this.listener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -50,6 +53,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.passwordFont.setText(String.valueOf(passwordItem.getPasswordName().charAt(0)));
         holder.passwordName.setText(passwordItem.getPasswordName());
+
         holder.copyIcon.setOnClickListener(v -> {
             holder.rootView.setBackgroundResource(R.color.default_color);
             holder.passwordFont.setBackgroundResource(R.drawable.password_background_copied);
@@ -59,6 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Toast.makeText(context, "Copied!", Toast.LENGTH_SHORT).show();
         });
 
+        holder.rootView.setOnClickListener(v -> listener.onItemClick(passwordItem));
         showAnimation(holder.itemView, position);
     }
 
@@ -87,5 +92,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             passwordName = itemView.findViewById(R.id.passwordName);
             copyIcon = itemView.findViewById(R.id.copyIcon);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(PasswordItem item);
     }
 }

@@ -46,6 +46,19 @@
     <string name="url">url</string>
     <string name="website_app_link">Website/App Link</string>
     <string name="username">Email / Username</string>
+
     <string name="generate_new">Generate new</string>
     <string name="add_password">Add password</string>
+
+    <string name="date_icon">date</string>
+    <string name="date">25 May 2022</string>
+    <string name="link_icon">icon</string>
+    <string name="link">www.facebook.com</string>
+    <string name="user_icon">user</string>
+    <string name="user">james.smith@mail.gg</string>
+    <string name="lock_icon">lock</string>
+    <string name="password_toggle">password toggle</string>
+
+    <string name="delete">Delete</string>
+    <string name="update">update</string>
 </resources>

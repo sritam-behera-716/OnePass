@@ -1,11 +1,15 @@
 package com.securevault.onepass.ui.main.home;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,6 +28,14 @@ public class HomeFragment extends Fragment {
     private ArrayList<PasswordItem> allPasswordItems;
     private RecyclerViewAdapter adapter;
 
+    private final ActivityResultLauncher<Intent> detailsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    fetchDataFromDatabase();
+                    showPasswordItems();
+                }
+            });
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -34,11 +46,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
-        allPasswordItems = (ArrayList<PasswordItem>) databaseHelper.passwordDao().retrieveRecord();
-
+        fetchDataFromDatabase();
         setUpSearchView();
         showPasswordItems();
+    }
+
+    private void fetchDataFromDatabase() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
+        allPasswordItems = (ArrayList<PasswordItem>) databaseHelper.passwordDao().retrieveRecord();
     }
 
     private void setUpSearchView() {
@@ -78,7 +93,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void showPasswordItems() {
+    public void showPasswordItems() {
         if (allPasswordItems.isEmpty()) {
             showNoResult(true);
             return;
@@ -90,7 +105,16 @@ public class HomeFragment extends Fragment {
         binding.description.setVisibility(View.GONE);
 
         binding.passwordStoreNumber.setText(String.valueOf(allPasswordItems.size()));
-        adapter = new RecyclerViewAdapter(requireContext(), allPasswordItems);
+        adapter = new RecyclerViewAdapter(requireContext(), allPasswordItems, item -> {
+            Intent intent = new Intent(requireContext(), DetailsActivity.class);
+            intent.putExtra("id", item.getId());
+            intent.putExtra("password_name", item.getPasswordName());
+            intent.putExtra("created_date", item.getCreatedDate().toString());
+            intent.putExtra("url", item.getUrl());
+            intent.putExtra("username", item.getUsername());
+            intent.putExtra("encrypted_password", item.getEncryptedPassword());
+            detailsLauncher.launch(intent);
+        });
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerView.setAdapter(adapter);
     }

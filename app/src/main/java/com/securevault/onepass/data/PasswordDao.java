@@ -1,6 +1,7 @@
 package com.securevault.onepass.data;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -17,4 +18,7 @@ public interface PasswordDao {
 
     @Update
     void updateRecord(PasswordItem passwordItem);
+
+    @Query("DELETE FROM passwords WHERE id = :id")
+    void deleteRecord(int id);
 }

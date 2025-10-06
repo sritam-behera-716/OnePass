@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     fetchDataFromDatabase();
                     showPasswordItems();
+                    savePasswordStoreNumber();
                 }
             });
 
@@ -104,7 +105,8 @@ public class HomeFragment extends Fragment {
         binding.title.setVisibility(View.GONE);
         binding.description.setVisibility(View.GONE);
 
-        binding.passwordStoreNumber.setText(String.valueOf(allPasswordItems.size()));
+        savePasswordStoreNumber();
+
         adapter = new RecyclerViewAdapter(requireContext(), allPasswordItems, item -> {
             Intent intent = new Intent(requireContext(), DetailsActivity.class);
             intent.putExtra("id", item.getId());
@@ -117,6 +119,10 @@ public class HomeFragment extends Fragment {
         });
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerView.setAdapter(adapter);
+    }
+
+    private void savePasswordStoreNumber() {
+        binding.passwordStoreNumber.setText(String.valueOf(allPasswordItems.size()));
     }
 
     private void showNoResult(boolean flag) {

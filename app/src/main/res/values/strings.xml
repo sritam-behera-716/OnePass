@@ -25,7 +25,7 @@
     <string name="setting">Setting</string>
 
     <string name="passwords_stored">Passwords Stored</string>
-    <string name="passwords_stored_number">5</string>
+    <string name="passwords_stored_number">0</string>
 
     <string name="search_websites_or_apps">Search Websites/Apps…</string>
 

@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.securevault.onepass.R;
@@ -51,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.passwordFont.setText(String.valueOf(passwordItem.getPasswordName().charAt(0)));
         holder.passwordName.setText(passwordItem.getPasswordName());
         holder.copyIcon.setOnClickListener(v -> {
-            holder.cardView.setCardBackgroundColor(context.getColor(R.color.default_color));
+            holder.rootView.setBackgroundResource(R.color.default_color);
             holder.passwordFont.setBackgroundResource(R.drawable.password_background_copied);
             holder.passwordFont.setTextColor(context.getColor(R.color.default_color));
             holder.passwordName.setText(R.string.copied);
@@ -76,13 +76,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CardView cardView;
+        private final RelativeLayout rootView;
         private final TextView passwordFont, passwordName;
         private final ImageView copyIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.cardView);
+            rootView = itemView.findViewById(R.id.rootView);
             passwordFont = itemView.findViewById(R.id.passwordFont);
             passwordName = itemView.findViewById(R.id.passwordName);
             copyIcon = itemView.findViewById(R.id.copyIcon);

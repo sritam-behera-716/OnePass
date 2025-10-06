@@ -9,14 +9,20 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.securevault.onepass.R;
+import com.securevault.onepass.data.DatabaseHelper;
+import com.securevault.onepass.data.PasswordItem;
 import com.securevault.onepass.databinding.FragmentHomeBinding;
 import com.securevault.onepass.utils.SearchViewHelper;
 
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
+    private ArrayList<PasswordItem> allPasswordItems;
+    private RecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,17 +34,20 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
+        allPasswordItems = (ArrayList<PasswordItem>) databaseHelper.passwordDao().retrieveRecord();
+
+        setUpSearchView();
+        showPasswordItems();
+    }
+
+    private void setUpSearchView() {
         binding.searchView.clearFocus();
         SearchViewHelper.setStrokeColorByTextListener(requireContext(), binding.searchView);
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
-                Fragment fragment = getChildFragmentManager().findFragmentById(R.id.frameLayout);
-                if (fragment instanceof PasswordListFragment) {
-                    ((PasswordListFragment) fragment).filterList(newText.trim());
-                } else if (fragment instanceof NoPasswordFoundFragment && newText.trim().isEmpty()) {
-                    loadFragment(new PasswordListFragment());
-                }
+                filterList(newText.trim());
                 return true;
             }
 
@@ -47,30 +56,55 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-
-        showPasswordList();
     }
 
-    public void showPasswordList() {
-        loadFragment(new PasswordListFragment());
-    }
+    public void filterList(String text) {
+        if (text.isEmpty()) {
+            showPasswordItems();
+            return;
+        }
 
-    public void showNoPasswordFound(boolean flag) {
-        if (flag) {
-            loadFragment(NoPasswordFoundFragment.getInstance(requireContext()));
+        ArrayList<PasswordItem> filteredList = new ArrayList<>();
+        for (PasswordItem item : allPasswordItems) {
+            if (item.getPasswordName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            showNoResult(false);
         } else {
-            loadFragment(new NoPasswordFoundFragment());
+            adapter.setFilteredList(filteredList);
         }
     }
 
-    private void loadFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commitNow();
+    private void showPasswordItems() {
+        if (allPasswordItems.isEmpty()) {
+            showNoResult(true);
+            return;
+        }
+
+        binding.recyclerView.setVisibility(View.VISIBLE);
+        binding.searchIllustration.setVisibility(View.GONE);
+        binding.title.setVisibility(View.GONE);
+        binding.description.setVisibility(View.GONE);
+
+        binding.passwordStoreNumber.setText(String.valueOf(allPasswordItems.size()));
+        adapter = new RecyclerViewAdapter(requireContext(), allPasswordItems);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerView.setAdapter(adapter);
     }
 
-    public void changePasswordStoredNumber(int size) {
-        binding.passwordStoreNumber.setText(String.valueOf(size));
+    private void showNoResult(boolean flag) {
+        if (flag) {
+            binding.title.setText(R.string.no_passwords);
+            binding.description.setText(R.string.no_passwords_stored);
+        }
+
+        binding.recyclerView.setVisibility(View.GONE);
+        binding.searchIllustration.setVisibility(View.VISIBLE);
+        binding.title.setVisibility(View.VISIBLE);
+        binding.description.setVisibility(View.VISIBLE);
     }
 
     @Override

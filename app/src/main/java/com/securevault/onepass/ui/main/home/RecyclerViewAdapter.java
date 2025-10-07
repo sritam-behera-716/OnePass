@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.securevault.onepass.R;
 import com.securevault.onepass.data.PasswordItem;
+import com.securevault.onepass.utils.ClipboardHelper;
 
 import java.util.ArrayList;
 
@@ -54,11 +55,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.passwordName.setText(passwordItem.getPasswordName());
 
         holder.copyIcon.setOnClickListener(v -> {
-            holder.rootView.setBackgroundResource(R.color.default_color);
+            holder.copyIcon.setEnabled(false);
+
+            holder.rootView.setBackgroundResource(R.drawable.item_background_copied);
             holder.passwordFont.setBackgroundResource(R.drawable.password_background_copied);
             holder.passwordFont.setTextColor(context.getColor(R.color.default_color));
             holder.passwordName.setText(R.string.copied);
             holder.passwordName.setTextColor(context.getColor(R.color.white));
+
+            ClipboardHelper.copyToClipboard(context, passwordItem.getPasswordName());
             Toast.makeText(context, "Copied!", Toast.LENGTH_SHORT).show();
         });
 
@@ -79,6 +84,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(PasswordItem item);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final RelativeLayout rootView;
         private final TextView passwordFont, passwordName;
@@ -91,9 +100,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             passwordName = itemView.findViewById(R.id.passwordName);
             copyIcon = itemView.findViewById(R.id.copyIcon);
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(PasswordItem item);
     }
 }

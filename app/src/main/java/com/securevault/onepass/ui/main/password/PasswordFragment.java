@@ -37,24 +37,27 @@ public class PasswordFragment extends Fragment {
         editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.usernameEditText);
         editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.passwordEditText);
 
-        binding.passwordInputLayout.addPasswordButton.setOnClickListener(v -> {
-            String name = Objects.requireNonNull(binding.passwordInputLayout.nameEditText.getText()).toString();
-            String url = Objects.requireNonNull(binding.passwordInputLayout.urlEditText.getText()).toString();
-            String username = Objects.requireNonNull(binding.passwordInputLayout.usernameEditText.getText()).toString();
-            String password = Objects.requireNonNull(binding.passwordInputLayout.passwordEditText.getText()).toString();
+        editTextHelper.setDrawableEndIcon(requireContext(), binding.passwordInputLayout.passwordEditText);
+        binding.passwordInputLayout.addPasswordButton.setOnClickListener(v -> addPassword());
+    }
 
-            if (name.isEmpty() || username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Please enter the details", Toast.LENGTH_SHORT).show();
-                return;
-            }
+    private void addPassword() {
+        String name = Objects.requireNonNull(binding.passwordInputLayout.nameEditText.getText()).toString();
+        String url = Objects.requireNonNull(binding.passwordInputLayout.urlEditText.getText()).toString();
+        String username = Objects.requireNonNull(binding.passwordInputLayout.usernameEditText.getText()).toString();
+        String password = Objects.requireNonNull(binding.passwordInputLayout.passwordEditText.getText()).toString();
 
-            LocalDate date = LocalDate.now();
-            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+        if (name.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(requireContext(), "Please enter the details", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
-            databaseHelper.passwordDao().insertRecord(new PasswordItem(name, url, username, password, date));
-            Toast.makeText(requireContext(), "Password added successfully!", Toast.LENGTH_SHORT).show();
-        });
+        LocalDate date = LocalDate.now();
+        name = name.substring(0, 1).toUpperCase() + name.substring(1);
+
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
+        databaseHelper.passwordDao().insertRecord(new PasswordItem(name, url, username, password, date));
+        Toast.makeText(requireContext(), "Password added successfully!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

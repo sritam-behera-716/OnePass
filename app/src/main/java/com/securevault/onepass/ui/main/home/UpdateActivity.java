@@ -15,6 +15,7 @@ import com.securevault.onepass.R;
 import com.securevault.onepass.data.DatabaseHelper;
 import com.securevault.onepass.data.PasswordItem;
 import com.securevault.onepass.databinding.ActivityUpdateBinding;
+import com.securevault.onepass.utils.EditTextHelper;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -42,6 +43,9 @@ public class UpdateActivity extends AppCompatActivity {
 
         setUpToolBar();
         setUpUserInterface();
+
+        EditTextHelper editTextHelper = new EditTextHelper();
+        editTextHelper.setDrawableEndIcon(this, binding.passwordInputLayout.passwordEditText);
 
         binding.passwordInputLayout.screenTitle.setText(R.string.update);
         binding.passwordInputLayout.addPasswordButton.setText(R.string.save_changes);

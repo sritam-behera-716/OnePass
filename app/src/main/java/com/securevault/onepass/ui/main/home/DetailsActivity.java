@@ -3,6 +3,7 @@ package com.securevault.onepass.ui.main.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.securevault.onepass.R;
 import com.securevault.onepass.data.DatabaseHelper;
 import com.securevault.onepass.databinding.ActivityDetailsBinding;
+import com.securevault.onepass.utils.ClipboardHelper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +24,7 @@ import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity {
     private ActivityDetailsBinding binding;
+    private boolean isPasswordHide = true;
     private int id;
     private String title;
     private String date;
@@ -44,8 +47,28 @@ public class DetailsActivity extends AppCompatActivity {
         setUpToolBar();
         setUpUserInterface();
 
+        binding.passwordToggle.setOnClickListener(v -> showOrHidePassword());
+        binding.copyIcon.setOnClickListener(v -> copyPassword());
         binding.deleteButton.setOnClickListener(v -> deletePassword());
         binding.updateButton.setOnClickListener(v -> updatePassword());
+    }
+
+    private void showOrHidePassword() {
+        if (isPasswordHide) {
+            binding.passwordToggle.setImageResource(R.drawable.ic_eye_open);
+            binding.passwordText.setText(password);
+            binding.passwordText.setTransformationMethod(null);
+            isPasswordHide = false;
+        } else {
+            binding.passwordToggle.setImageResource(R.drawable.ic_eye_close);
+            binding.passwordText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            isPasswordHide = true;
+        }
+    }
+
+    private void copyPassword() {
+        ClipboardHelper.copyToClipboard(this, binding.passwordText.getText().toString());
+        Toast.makeText(this, "Copied", Toast.LENGTH_SHORT).show();
     }
 
     private void updatePassword() {
@@ -88,6 +111,7 @@ public class DetailsActivity extends AppCompatActivity {
         binding.linkText.setText(link.isEmpty() ? "null" : link);
         binding.userText.setText(username);
         binding.passwordText.setText(password);
+        binding.passwordText.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
     private String getFormattedDate(String date) {

@@ -12,6 +12,9 @@ public interface PasswordDao {
     @Query("SELECT * FROM passwords ORDER BY password_name ASC")
     List<PasswordItem> retrieveRecord();
 
+    @Query("SELECT * FROM passwords WHERE id = :id")
+    PasswordItem retrieveRecordById(int id);
+
     @Insert
     void insertRecord(PasswordItem passwordItem);
 

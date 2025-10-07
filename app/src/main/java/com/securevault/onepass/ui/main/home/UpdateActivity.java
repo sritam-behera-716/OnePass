@@ -1,11 +1,11 @@
 package com.securevault.onepass.ui.main.home;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -41,7 +41,6 @@ public class UpdateActivity extends AppCompatActivity {
             return insets;
         });
 
-        setUpToolBar();
         setUpUserInterface();
 
         EditTextHelper editTextHelper = new EditTextHelper();
@@ -69,31 +68,25 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private void updatePassword() {
-        title = Objects.requireNonNull(binding.passwordInputLayout.nameEditText.getText()).toString();
-        link = Objects.requireNonNull(binding.passwordInputLayout.urlEditText.getText()).toString();
-        username = Objects.requireNonNull(binding.passwordInputLayout.usernameEditText.getText()).toString();
-        password = Objects.requireNonNull(binding.passwordInputLayout.passwordEditText.getText()).toString();
+        String updatedTitle = Objects.requireNonNull(binding.passwordInputLayout.nameEditText.getText()).toString();
+        String updatedLink = Objects.requireNonNull(binding.passwordInputLayout.urlEditText.getText()).toString();
+        String updatedUsername = Objects.requireNonNull(binding.passwordInputLayout.usernameEditText.getText()).toString();
+        String updatedPassword = Objects.requireNonNull(binding.passwordInputLayout.passwordEditText.getText()).toString();
 
-        if (title.isEmpty() || username.isEmpty() || password.isEmpty()) {
+        if (updatedTitle.isEmpty() || username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter the details", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        title = title.substring(0, 1).toUpperCase() + title.substring(1);
+        updatedTitle = updatedTitle.substring(0, 1).toUpperCase() + updatedTitle.substring(1);
 
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-        databaseHelper.passwordDao().updateRecord(new PasswordItem(id, title, link, username, password, LocalDate.parse(date)));
-        Toast.makeText(this, "Password updated successfully!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void setUpToolBar() {
-        setSupportActionBar(binding.toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(null);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+        if (!(updatedTitle.equalsIgnoreCase(title) && updatedLink.equalsIgnoreCase(link) && updatedUsername.equalsIgnoreCase(username) && updatedPassword.equalsIgnoreCase(password))) {
+            DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+            databaseHelper.passwordDao().updateRecord(new PasswordItem(id, updatedTitle, updatedLink, updatedUsername, updatedPassword, LocalDate.parse(date)));
+            setResult(Activity.RESULT_OK);
         }
-        binding.toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
+        Toast.makeText(this, "Password updated successfully!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

@@ -7,7 +7,8 @@ import android.text.method.PasswordTransformationMethod;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.securevault.onepass.R;
 import com.securevault.onepass.data.DatabaseHelper;
+import com.securevault.onepass.data.PasswordItem;
 import com.securevault.onepass.databinding.ActivityDetailsBinding;
 import com.securevault.onepass.utils.ClipboardHelper;
 
@@ -32,6 +34,14 @@ public class DetailsActivity extends AppCompatActivity {
     private String username;
     private String password;
 
+    private final ActivityResultLauncher<Intent> detailsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    setResult(Activity.RESULT_OK);
+                    refreshDetails();
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +54,6 @@ public class DetailsActivity extends AppCompatActivity {
             return insets;
         });
 
-        setUpToolBar();
         setUpUserInterface();
 
         binding.passwordToggle.setOnClickListener(v -> showOrHidePassword());
@@ -79,7 +88,7 @@ public class DetailsActivity extends AppCompatActivity {
         intent.putExtra("url", link);
         intent.putExtra("username", username);
         intent.putExtra("encrypted_password", password);
-        startActivity(intent);
+        detailsLauncher.launch(intent);
     }
 
     private void deletePassword() {
@@ -96,6 +105,27 @@ public class DetailsActivity extends AppCompatActivity {
         setResult(Activity.RESULT_OK);
         finish();
     }
+
+    private void refreshDetails() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+        PasswordItem passwordItem = databaseHelper.passwordDao().retrieveRecordById(id);
+
+        title = passwordItem.getPasswordName();
+        link = passwordItem.getUrl();
+        username = passwordItem.getUsername();
+        password = passwordItem.getEncryptedPassword();
+        date = getFormattedDate(passwordItem.getCreatedDate().toString());
+
+        binding.screenTitle.setText(title);
+        binding.linkText.setText(link.isEmpty() ? "null" : link);
+        binding.userText.setText(username);
+        binding.passwordText.setText(password);
+        binding.dateText.setText(date);
+
+        binding.passwordText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        isPasswordHide = true;
+    }
+
 
     private void setUpUserInterface() {
         Intent intent = getIntent();
@@ -124,17 +154,5 @@ public class DetailsActivity extends AppCompatActivity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ENGLISH);
         LocalDate localDate = LocalDate.parse(formattedDate, formatter);
         return localDate.toString();
-    }
-
-
-    private void setUpToolBar() {
-        setSupportActionBar(binding.toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(null);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
-        }
-        binding.toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
     }
 }

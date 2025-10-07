@@ -69,6 +69,8 @@ public class EditTextHelper {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateStrokeColor(editText, editText.hasFocus());
+
                 Drawable endDrawable = editText.getCompoundDrawables()[2];
                 if (endDrawable != null) {
                     if (s.length() > 0) {

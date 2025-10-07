@@ -32,16 +32,16 @@ public class PasswordFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         EditTextHelper editTextHelper = new EditTextHelper();
-        editTextHelper.setStrokeColorByTyping(binding.nameEditText);
-        editTextHelper.setStrokeColorByTyping(binding.urlEditText);
-        editTextHelper.setStrokeColorByTyping(binding.usernameEditText);
-        editTextHelper.setStrokeColorByTyping(binding.passwordEditText);
+        editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.nameEditText);
+        editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.urlEditText);
+        editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.usernameEditText);
+        editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.passwordEditText);
 
-        binding.addPasswordButton.setOnClickListener(v -> {
-            String name = Objects.requireNonNull(binding.nameEditText.getText()).toString();
-            String url = Objects.requireNonNull(binding.urlEditText.getText()).toString();
-            String username = Objects.requireNonNull(binding.usernameEditText.getText()).toString();
-            String password = Objects.requireNonNull(binding.passwordEditText.getText()).toString();
+        binding.passwordInputLayout.addPasswordButton.setOnClickListener(v -> {
+            String name = Objects.requireNonNull(binding.passwordInputLayout.nameEditText.getText()).toString();
+            String url = Objects.requireNonNull(binding.passwordInputLayout.urlEditText.getText()).toString();
+            String username = Objects.requireNonNull(binding.passwordInputLayout.usernameEditText.getText()).toString();
+            String password = Objects.requireNonNull(binding.passwordInputLayout.passwordEditText.getText()).toString();
 
             if (name.isEmpty() || username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter the details", Toast.LENGTH_SHORT).show();
@@ -49,6 +49,7 @@ public class PasswordFragment extends Fragment {
             }
 
             LocalDate date = LocalDate.now();
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
 
             DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());
             databaseHelper.passwordDao().insertRecord(new PasswordItem(name, url, username, password, date));
@@ -59,10 +60,10 @@ public class PasswordFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        binding.nameEditText.setText(null);
-        binding.urlEditText.setText(null);
-        binding.usernameEditText.setText(null);
-        binding.passwordEditText.setText(null);
+        binding.passwordInputLayout.nameEditText.setText(null);
+        binding.passwordInputLayout.urlEditText.setText(null);
+        binding.passwordInputLayout.usernameEditText.setText(null);
+        binding.passwordInputLayout.passwordEditText.setText(null);
     }
 
     @Override

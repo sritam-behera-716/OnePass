@@ -22,6 +22,12 @@ import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity {
     private ActivityDetailsBinding binding;
+    private int id;
+    private String title;
+    private String date;
+    private String link;
+    private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,18 @@ public class DetailsActivity extends AppCompatActivity {
         setUpUserInterface();
 
         binding.deleteButton.setOnClickListener(v -> deletePassword());
+        binding.updateButton.setOnClickListener(v -> updatePassword());
+    }
+
+    private void updatePassword() {
+        Intent intent = new Intent(this, UpdateActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("password_name", title);
+        intent.putExtra("created_date", getOriginalDate(date));
+        intent.putExtra("url", link);
+        intent.putExtra("username", username);
+        intent.putExtra("encrypted_password", password);
+        startActivity(intent);
     }
 
     private void deletePassword() {
@@ -58,15 +76,16 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void setUpUserInterface() {
         Intent intent = getIntent();
-        String title = intent.getStringExtra("password_name");
-        String date = getFormattedDate(intent.getStringExtra("created_date"));
-        String link = intent.getStringExtra("url");
-        String username = intent.getStringExtra("username");
-        String password = intent.getStringExtra("encrypted_password");
+        id = intent.getIntExtra("id", -1);
+        title = intent.getStringExtra("password_name");
+        date = getFormattedDate(intent.getStringExtra("created_date"));
+        link = intent.getStringExtra("url");
+        username = intent.getStringExtra("username");
+        password = intent.getStringExtra("encrypted_password");
 
         binding.screenTitle.setText(title);
         binding.dateText.setText(date);
-        binding.linkText.setText(link);
+        binding.linkText.setText(link.isEmpty() ? "null" : link);
         binding.userText.setText(username);
         binding.passwordText.setText(password);
     }
@@ -76,6 +95,13 @@ public class DetailsActivity extends AppCompatActivity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ENGLISH);
         return localDate.format(formatter);
     }
+
+    private String getOriginalDate(String formattedDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ENGLISH);
+        LocalDate localDate = LocalDate.parse(formattedDate, formatter);
+        return localDate.toString();
+    }
+
 
     private void setUpToolBar() {
         setSupportActionBar(binding.toolbar);

@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnePass">
         <activity
+            android:name=".ui.main.password.GeneratePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.home.UpdateActivity"
             android:exported="false" />
         <activity

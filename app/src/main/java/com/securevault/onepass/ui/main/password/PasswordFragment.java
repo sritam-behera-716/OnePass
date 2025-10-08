@@ -1,9 +1,11 @@
 package com.securevault.onepass.ui.main.password;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,8 @@ public class PasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         EditTextHelper editTextHelper = new EditTextHelper();
         editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.nameEditText);
         editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.urlEditText);
@@ -38,6 +42,7 @@ public class PasswordFragment extends Fragment {
         editTextHelper.setStrokeColorByTyping(binding.passwordInputLayout.passwordEditText);
 
         editTextHelper.setDrawableEndIcon(requireContext(), binding.passwordInputLayout.passwordEditText);
+        binding.passwordInputLayout.generateNewButton.setOnClickListener(v -> startActivity(new Intent(requireContext(), GeneratePasswordActivity.class)));
         binding.passwordInputLayout.addPasswordButton.setOnClickListener(v -> addPassword());
     }
 

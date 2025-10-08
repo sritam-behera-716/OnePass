@@ -3,6 +3,7 @@ package com.securevault.onepass.ui.main.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@ import com.securevault.onepass.R;
 import com.securevault.onepass.data.DatabaseHelper;
 import com.securevault.onepass.data.PasswordItem;
 import com.securevault.onepass.databinding.ActivityUpdateBinding;
+import com.securevault.onepass.ui.main.password.GeneratePasswordActivity;
 import com.securevault.onepass.utils.EditTextHelper;
 
 import java.time.LocalDate;
@@ -41,6 +43,8 @@ public class UpdateActivity extends AppCompatActivity {
             return insets;
         });
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         setUpUserInterface();
 
         EditTextHelper editTextHelper = new EditTextHelper();
@@ -49,6 +53,7 @@ public class UpdateActivity extends AppCompatActivity {
         binding.passwordInputLayout.screenTitle.setText(R.string.update);
         binding.passwordInputLayout.addPasswordButton.setText(R.string.save_changes);
 
+        binding.passwordInputLayout.generateNewButton.setOnClickListener(v -> startActivity(new Intent(this, GeneratePasswordActivity.class)));
         binding.passwordInputLayout.addPasswordButton.setOnClickListener(v -> updatePassword());
     }
 

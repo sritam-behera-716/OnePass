@@ -62,4 +62,31 @@
     <string name="delete">Delete</string>
     <string name="update">update</string>
     <string name="save_changes">Save changes</string>
+
+    <string name="password_length">Password length</string>
+    <string name="include_symbols">Include symbols</string>
+    <string name="include_digits">Include digits</string>
+    <string name="letter_types">Letter types</string>
+    <string name="randomize">Randomize</string>
+
+    <string-array name="length">
+        <item>6</item>
+        <item>8</item>
+        <item>12</item>
+        <item>16</item>
+        <item>20</item>
+        <item>24</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="yes_no">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="letter_types">
+        <item>Mix</item>
+        <item>Upper case</item>
+        <item>Lower case</item>
+    </string-array>
 </resources>

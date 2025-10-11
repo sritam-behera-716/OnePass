@@ -13,14 +13,17 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.securevault.onepass.R;
 import com.securevault.onepass.databinding.ActivityMainBinding;
+import com.securevault.onepass.utils.BiometricHelper;
+import com.securevault.onepass.utils.PreferenceHelper;
 
 public class MainActivity extends AppCompatActivity {
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -28,10 +31,29 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        setUpNavigation();
+    }
+
+    private void setUpNavigation() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
         }
+    }
+
+    private void unlockWithBiometric() {
+        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance(this);
+        boolean check = preferenceHelper.getBiometricMode(PreferenceHelper.KEY_BIOMETRIC);
+        if (check) {
+            BiometricHelper biometricHelper = new BiometricHelper(this);
+            biometricHelper.checkAndShowBiometricPrompt();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        unlockWithBiometric();
     }
 }

@@ -28,15 +28,6 @@ public class HomeFragment extends Fragment {
     private ArrayList<PasswordItem> allPasswordItems;
     private RecyclerViewAdapter adapter;
 
-    private final ActivityResultLauncher<Intent> detailsLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    fetchDataFromDatabase();
-                    showPasswordItems();
-                    savePasswordStoreNumber();
-                }
-            });
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -51,6 +42,15 @@ public class HomeFragment extends Fragment {
         setUpSearchView();
         showPasswordItems();
     }
+
+    private final ActivityResultLauncher<Intent> detailsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    fetchDataFromDatabase();
+                    showPasswordItems();
+                    savePasswordStoreNumber();
+                }
+            });
 
     private void fetchDataFromDatabase() {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(requireContext());

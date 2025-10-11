@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,15 +20,18 @@ import com.securevault.onepass.databinding.ActivitySplashBinding;
 import com.securevault.onepass.ui.main.MainActivity;
 import com.securevault.onepass.ui.onboarding.OnboardingActivity;
 import com.securevault.onepass.utils.PreferenceHelper;
+import com.securevault.onepass.utils.ThemeHelper;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
+    private ActivitySplashBinding binding;
+    private PreferenceHelper preferenceHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
+        binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -35,13 +39,11 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        String text = getResources().getString(R.string.app_name).toUpperCase();
-        SpannableString spannableString = new SpannableString(text);
-        spannableString.setSpan(new ForegroundColorSpan(getColor(R.color.default_color)), 0, 3, 0);
-        spannableString.setSpan(new ForegroundColorSpan(getColor(R.color.span_color)), 3, text.length(), 0);
-        binding.appName.setText(spannableString);
+        preferenceHelper = PreferenceHelper.getInstance(this);
 
-        PreferenceHelper preferenceHelper = PreferenceHelper.getInstance(this);
+        setSpannableString();
+        setAppTheme();
+
         boolean isIntroOpened = preferenceHelper.getIntroOpenInformation(PreferenceHelper.KEY_INTRO_OPEN);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -52,5 +54,23 @@ public class SplashActivity extends AppCompatActivity {
             }
             finish();
         }, 3000);
+    }
+
+    private void setAppTheme() {
+        int themeMode = preferenceHelper.getThemeMode(PreferenceHelper.KEY_THEME_MODE);
+        if (themeMode == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
+            ThemeHelper themeHelper = new ThemeHelper(this);
+            AppCompatDelegate.setDefaultNightMode(themeHelper.getCurrentDeviceTheme());
+        } else {
+            AppCompatDelegate.setDefaultNightMode(themeMode);
+        }
+    }
+
+    private void setSpannableString() {
+        String text = getResources().getString(R.string.app_name).toUpperCase();
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(new ForegroundColorSpan(getColor(R.color.default_color)), 0, 3, 0);
+        spannableString.setSpan(new ForegroundColorSpan(getColor(R.color.span_color)), 3, text.length(), 0);
+        binding.appName.setText(spannableString);
     }
 }

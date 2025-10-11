@@ -89,4 +89,17 @@
         <item>Upper case</item>
         <item>Lower case</item>
     </string-array>
+
+    <string name="security">Security</string>
+    <string name="fingerprint">Fingerprint</string>
+    <string name="biometric_screen_lock">Biometric &amp; screen lock</string>
+    <string name="app_unlock">OnePass is locked</string>
+    <string name="authentication_message">Authentication is required to access the OnePass app</string>
+    <string name="unlock_now">Unlock now</string>
+    <string name="theme">Theme</string>
+    <string name="light_mode">Light mode</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="device_settings">Device settings</string>
+    <string name="app_version">- Version 1.0 -</string>
+    <string name="theme_mode">Choose your preferred theme for OnePass</string>
 </resources>
